@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COMPILADOR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.60.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.60.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.60.0/mode/javascript/javascript.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        #editor-container {
+            width: 50%;
+            height: 340px;
+            border: 1px solid #ccc;
+        }
+
+        /* Personalizar el scrollbar en navegadores webkit (Chrome, Safari) */
+        ::-webkit-scrollbar {
+            width: 7px;
+            /* Ancho del scrollbar */
+        }
+        /* Personalizar el scrollbar en Firefox */
+        /* Nota: Firefox no admite la personalización completa del scrollbar mediante CSS */
+    </style>
+</head>
+
+<body></body>
+
+
+    <div class="container">
+
+        <div id="editor-container" class="card px-3 py-1" style="width: 100%;">
+            <h5>CODIGO FUENTE</h5>
+
+            <form method="post">
+                <textarea name="code" rows="10" cols="146">{{ request.form['code'] if request.form['code'] else '' }}</textarea><br>
+                <button type="submit" class="btn btn-primary">Ejecutar</button>
+            </form>
+
+        </div>
+        
+        <div></div>
+            <div style="width: 100%;" class="mt-2">
+
+                <div class="card mb-2">
+                    <div class="card-header bg-primary">
+                        <h5 class="card-title">ANALISIS LEXICO</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 320px; overflow-y: auto;">
+                        <ul>
+                            {% for token in tokens %}
+                            <table class="table table-sm" border="1">
+                                <h6>{{ token[1] }}</h6>
+                                <tr>
+                                    <th>TIPO</th>
+                                    <th>VALOR</th>
+                                    <th>LINEA</th>
+                                    <th>POSICION</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ token[0] }}</td>
+                                    <td>{{ token[1] }}</td>
+                                    <td>{{ token[2] }}</td>
+                                    <td>{{ token[3] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-header bg-primary">
+                        <h5 class="card-title">ANALISIS SINTACTICO</h5>
+                    </div>
+                    <div class="card-body" style="max-height: 320px; overflow-y: auto;">
+                        <p>{{ syntax }}</p>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-header bg-primary">
+                        <h5 class="card-title">ANALISIS SEMANTICO</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            {% for elemento in mensaje3 %}
+                            <h6>{{ elemento }}</h6>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-header bg-primary">
+                        <h5 class="card-title">TABLA DE SÍMBOLOS</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for key, value in symbols.items() %}
+                        <li class="list-group-item">{{ key }} : {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
